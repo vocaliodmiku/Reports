@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earshot CS Preliminary Results</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --nav-width: 200px;
+            --gap: 20px;
         }
 
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
+            line-height: 1.6;
         }
 
         .container {
@@ -20,50 +21,80 @@
             min-height: 100vh;
         }
 
-        /* 左侧导航栏样式 */
-        .sidebar {
-            flex: 0 0 200px;
-            background-color: #f5f5f5;
+        /* 导航样式 */
+        nav {
+            width: var(--nav-width);
+            background: #f5f5f5;
             padding: 20px;
-            border-right: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
 
-        .nav-button {
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin: 10px 0;
+        }
+
+        .nav-link {
             display: block;
-            width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            cursor: pointer;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
             transition: all 0.3s;
         }
 
-        .nav-button:hover {
-            background-color: #e0e0e0;
+        .nav-link:hover,
+        .nav-link.active {
+            background: #007bff;
+            color: white;
         }
 
-        /* 右侧图片区域 */
-        .content {
-            flex-grow: 1;
+        /* 主要内容区域 */
+        main {
+            flex: 1;
             padding: 20px;
         }
 
-        .album-grid {
+        /* 描述文字样式 */
+        .description {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        /* 相册网格布局 */
+        .gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: var(--gap);
         }
 
-        .photo {
+        /* 图片项样式 */
+        .photo-item {
+            position: relative;
+            break-inside: avoid;
+            margin-bottom: var(--gap);
+        }
+
+        .photo-item img {
             width: 100%;
+            height: auto;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .photo:hover {
-            transform: scale(1.02);
+        .photo-title {
+            text-align: center;
+            margin: 10px 0;
+            color: #666;
         }
 
         /* 响应式设计 */
@@ -72,13 +103,13 @@
                 flex-direction: column;
             }
 
-            .sidebar {
-                flex: 0 0 auto;
-                border-right: none;
-                border-bottom: 1px solid #ddd;
+            nav {
+                width: 100%;
+                height: auto;
+                position: static;
             }
 
-            .album-grid {
+            .gallery {
                 grid-template-columns: 1fr;
             }
         }
@@ -86,53 +117,114 @@
 </head>
 <body>
     <div class="container">
-        <!-- 左侧导航栏 -->
-        <nav class="sidebar">
-            <h2>Earshot CS Preliminary Results</h2>
-            <button class="nav-button" onclick="loadAlbum('20250207-5spk')">20250207-5spk</button>
-            <button class="nav-button" onclick="loadAlbum('20250207-5spk-FreqCorrection')">20250207-5spk-FreqCorrection</button>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-album="nature">20250207-5spk</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-album="city">20250207-5spk</a>
+                </li>
+            </ul>
         </nav>
 
-        <!-- 右侧内容区 -->
-        <main class="content">
-            <div class="album-grid" id="photoGrid">
-                <!-- 图片将通过JavaScript动态加载 -->
+        <main>
+            <div class="description">
+                <h2 id="album-title">20250207-5spk-FreqCorrection</h2>
+                <p id="album-description">20250207-5spk-FreqCorrection</p>
             </div>
+
+            <div class="gallery" id="gallery"></div>
         </main>
     </div>
 
     <script>
-        // 相册数据
+        // 相册数据配置
         const albums = {
-            nature: [
-                "https://via.placeholder.com/600x400/86f9b7/000?text=Nature+1",
-                "https://via.placeholder.com/600x400/86f9b7/000?text=Nature+2",
-                "https://via.placeholder.com/600x400/86f9b7/000?text=Nature+3",
-                "https://via.placeholder.com/600x400/86f9b7/000?text=Nature+4"
-            ],
-            city: [
-                "https://via.placeholder.com/600x400/f9c186/000?text=City+1",
-                "https://via.placeholder.com/600x400/f9c186/000?text=City+2",
-                "https://via.placeholder.com/600x400/f9c186/000?text=City+3",
-                "https://via.placeholder.com/600x400/f9c186/000?text=City+4"
-            ]
+            nature: {
+                title: "自然风光",
+                description: "这里展示大自然的壮丽景色，包含山脉、森林和湖泊等自然景观。",
+                images: [
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#011805#Pattern_Excluded.jpg",title: "666-11243-0090-female#011805#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#005464#Pattern_Excluded.jpg",title: "666-11243-0090-female#005464#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#008089#Pattern_Excluded.jpg",title: "666-11243-0090-female#008089#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#017827#Pattern_Excluded.jpg",title: "666-11243-0090-female#017827#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#018102#Pattern_Excluded.jpg",title: "666-11243-0090-female#018102#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#031362#Pattern_Excluded.jpg",title: "666-11243-0090-female#031362#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#007460#Pattern_Excluded.jpg",title: "666-11243-0090-female#007460#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#000681#Pattern_Excluded.jpg",title: "666-11243-0090-female#000681#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#006827#Pattern_Excluded.jpg",title: "666-11243-0090-female#006827#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk/figs/666-11243-0090-female#025718#Pattern_Excluded.jpg",title: "666-11243-0090-female#025718#Pattern_Excluded.jpg"},
+                ]
+            },
+            city: {
+                title: "城市景观",
+                description: "现代都市的天际线与历史建筑的完美融合。",
+                images: [
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#011805#Pattern_Excluded.jpg",title: "666-11243-0090-female#011805#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#005464#Pattern_Excluded.jpg",title: "666-11243-0090-female#005464#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#008089#Pattern_Excluded.jpg",title: "666-11243-0090-female#008089#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#017827#Pattern_Excluded.jpg",title: "666-11243-0090-female#017827#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#018102#Pattern_Excluded.jpg",title: "666-11243-0090-female#018102#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#031362#Pattern_Excluded.jpg",title: "666-11243-0090-female#031362#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#007460#Pattern_Excluded.jpg",title: "666-11243-0090-female#007460#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#000681#Pattern_Excluded.jpg",title: "666-11243-0090-female#000681#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#006827#Pattern_Excluded.jpg",title: "666-11243-0090-female#006827#Pattern_Excluded.jpg"},
+                {filename: "static/20250207-5spk-FreqCorrection/figs/666-11243-0090-female#025718#Pattern_Excluded.jpg",title: "666-11243-0090-female#025718#Pattern_Excluded.jpg"},
+                ]
+            }
         };
 
-        // 加载相册函数
-        function loadAlbum(albumName) {
-            const grid = document.getElementById('photoGrid');
-            grid.innerHTML = ''; // 清空当前内容
+        // 初始化相册
+        function initGallery(albumId) {
+            const album = albums[albumId];
+            const gallery = document.getElementById('gallery');
+            
+            // 更新标题和描述
+            document.getElementById('album-title').textContent = album.title;
+            document.getElementById('album-description').textContent = album.description;
 
-            albums[albumName].forEach(imgUrl => {
+            // 清空现有内容
+            gallery.innerHTML = '';
+
+            // 生成图片元素
+            album.images.forEach(image => {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'photo-item';
+                
                 const img = document.createElement('img');
-                img.src = imgUrl;
-                img.className = 'photo';
-                grid.appendChild(img);
+                img.src = `/static/${albumId}/${image.filename}`;
+                img.alt = image.title;
+                
+                const title = document.createElement('div');
+                title.className = 'photo-title';
+                title.textContent = image.title;
+
+                photoItem.appendChild(img);
+                photoItem.appendChild(title);
+                gallery.appendChild(photoItem);
             });
         }
 
+        // 导航切换功能
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // 移除所有active类
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                
+                // 设置当前active
+                link.classList.add('active');
+                
+                // 加载对应相册
+                const albumId = link.dataset.album;
+                initGallery(albumId);
+            });
+        });
+
         // 默认加载第一个相册
-        window.onload = () => loadAlbum('nature');
+        initGallery('nature');
     </script>
 </body>
 </html>

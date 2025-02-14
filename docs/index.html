@@ -52,8 +52,8 @@
 
         .nav-link:hover,
         .nav-link.active {
-            background: #007bff;
-            color: white;
+            background: -007bff;
+            color: rgb(19, 187, 128);
         }
 
         /* 主要内容区域 */
@@ -72,9 +72,9 @@
 
         /* 相册网格布局 */
         .gallery {
-            display: grid;
+            /* display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: var(--gap);
+            gap: var(--gap); */
         }
 
         /* 图片项样式 */
@@ -98,7 +98,7 @@
         }
 
         /* 响应式设计 */
-        @media (max-width: 768px) {
+        @media (max-width: 1536px) {
             .container {
                 flex-direction: column;
             }
@@ -113,6 +113,27 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* 使图片并排显示 */
+        .image-row {
+            display: flex;
+            gap: 20px; /* 控制图片间距 */
+            margin-bottom: 10px; /* 标题与图片的间距 */
+        }
+
+        /* 控制图片宽度（可选） */
+        .image-row img {
+            width: 50%;
+            height: auto;
+        }
+
+        /* 标题样式 */
+        .photo-title {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
     </style>
 </head>
 <body>
@@ -120,18 +141,18 @@
         <nav>
             <ul class="nav-list">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" data-album="20250207-5spk">20250207-5spk</a>
+                    <a href="#" class="nav-link active" data-album="Trial_20250207_5spk">Trial_20250207_5spk</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-album="20250207-5spk-FreqCorrection">20250207-5spk-FreqCorrection</a>
+                    <a href="#" class="nav-link" data-album="Trial_20250207_5spk_FreqCorrection">Trial_20250207_5spk_FreqCorrection</a>
                 </li>
             </ul>
         </nav>
 
         <main>
             <div class="description">
-                <h2 id="album-title">20250207-5spk-FreqCorrection</h2>
-                <p id="album-description">20250207-5spk-FreqCorrection</p>
+                <h2 id="album-title"></h2>
+                <p id="album-description"></p>
             </div>
 
             <div class="gallery" id="gallery"></div>
@@ -141,39 +162,74 @@
     <script>
         // 相册数据配置
         const albums = {
-            nature: {
-                title: "自然风光",
+            Trial_20250207_5spk: {
+                title: "Trial_20250207_5spk",
+                wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/7850ydjv",
+                timecourse: "time_course.png",
+                timecourse1stword: "time_course.1stword.png",
                 description: "这里展示大自然的壮丽景色，包含山脉、森林和湖泊等自然景观。",
-                images: [
-                {filename: "figs/666-11243-0090-female#011805#Pattern_Excluded.jpg",title: "666-11243-0090-female#011805#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#005464#Pattern_Excluded.jpg",title: "666-11243-0090-female#005464#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#008089#Pattern_Excluded.jpg",title: "666-11243-0090-female#008089#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#017827#Pattern_Excluded.jpg",title: "666-11243-0090-female#017827#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#018102#Pattern_Excluded.jpg",title: "666-11243-0090-female#018102#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#031362#Pattern_Excluded.jpg",title: "666-11243-0090-female#031362#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#007460#Pattern_Excluded.jpg",title: "666-11243-0090-female#007460#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#000681#Pattern_Excluded.jpg",title: "666-11243-0090-female#000681#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#006827#Pattern_Excluded.jpg",title: "666-11243-0090-female#006827#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#025718#Pattern_Excluded.jpg",title: "666-11243-0090-female#025718#Pattern_Excluded.jpg"},
-                ]
+                images1: [
+                    {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-008089-Pattern_Excluded.jpg",title: "666-11243-0090-female-008089-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-017827-Pattern_Excluded.jpg",title: "666-11243-0090-female-017827-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-018102-Pattern_Excluded.jpg",title: "666-11243-0090-female-018102-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-031362-Pattern_Excluded.jpg",title: "666-11243-0090-female-031362-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-007460-Pattern_Excluded.jpg",title: "666-11243-0090-female-007460-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-000681-Pattern_Excluded.jpg",title: "666-11243-0090-female-000681-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-006827-Pattern_Excluded.jpg",title: "666-11243-0090-female-006827-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-025718-Pattern_Excluded.jpg",title: "666-11243-0090-female-025718-Pattern_Excluded.jpg"},
+                ],
+                images2: [
+                    {filename: "figs2/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-008089-Pattern_Excluded.jpg",title: "666-11243-0090-female-008089-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-017827-Pattern_Excluded.jpg",title: "666-11243-0090-female-017827-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-018102-Pattern_Excluded.jpg",title: "666-11243-0090-female-018102-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-031362-Pattern_Excluded.jpg",title: "666-11243-0090-female-031362-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-007460-Pattern_Excluded.jpg",title: "666-11243-0090-female-007460-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-000681-Pattern_Excluded.jpg",title: "666-11243-0090-female-000681-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-006827-Pattern_Excluded.jpg",title: "666-11243-0090-female-006827-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-025718-Pattern_Excluded.jpg",title: "666-11243-0090-female-025718-Pattern_Excluded.jpg"},
+                ],
             },
-            city: {
+            Trial_20250207_5spk_FreqCorrection: {
                 title: "城市景观",
+                wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/t1fep25f",
+                timecourse: "time_course.png",
+                timecourse1stword: "time_course.1stword.png",
                 description: "现代都市的天际线与历史建筑的完美融合。",
-                images: [
-                {filename: "figs/666-11243-0090-female#011805#Pattern_Excluded.jpg",title: "666-11243-0090-female#011805#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#005464#Pattern_Excluded.jpg",title: "666-11243-0090-female#005464#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#008089#Pattern_Excluded.jpg",title: "666-11243-0090-female#008089#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#017827#Pattern_Excluded.jpg",title: "666-11243-0090-female#017827#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#018102#Pattern_Excluded.jpg",title: "666-11243-0090-female#018102#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#031362#Pattern_Excluded.jpg",title: "666-11243-0090-female#031362#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#007460#Pattern_Excluded.jpg",title: "666-11243-0090-female#007460#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#000681#Pattern_Excluded.jpg",title: "666-11243-0090-female#000681#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#006827#Pattern_Excluded.jpg",title: "666-11243-0090-female#006827#Pattern_Excluded.jpg"},
-                {filename: "figs/666-11243-0090-female#025718#Pattern_Excluded.jpg",title: "666-11243-0090-female#025718#Pattern_Excluded.jpg"},
-                ]
+                images1: [
+                    {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-008089-Pattern_Excluded.jpg",title: "666-11243-0090-female-008089-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-017827-Pattern_Excluded.jpg",title: "666-11243-0090-female-017827-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-018102-Pattern_Excluded.jpg",title: "666-11243-0090-female-018102-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-031362-Pattern_Excluded.jpg",title: "666-11243-0090-female-031362-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-007460-Pattern_Excluded.jpg",title: "666-11243-0090-female-007460-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-000681-Pattern_Excluded.jpg",title: "666-11243-0090-female-000681-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-006827-Pattern_Excluded.jpg",title: "666-11243-0090-female-006827-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-025718-Pattern_Excluded.jpg",title: "666-11243-0090-female-025718-Pattern_Excluded.jpg"},
+                ],
+                images2: [
+                    {filename: "figs2/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-008089-Pattern_Excluded.jpg",title: "666-11243-0090-female-008089-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-017827-Pattern_Excluded.jpg",title: "666-11243-0090-female-017827-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-018102-Pattern_Excluded.jpg",title: "666-11243-0090-female-018102-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-031362-Pattern_Excluded.jpg",title: "666-11243-0090-female-031362-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-007460-Pattern_Excluded.jpg",title: "666-11243-0090-female-007460-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-000681-Pattern_Excluded.jpg",title: "666-11243-0090-female-000681-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-006827-Pattern_Excluded.jpg",title: "666-11243-0090-female-006827-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-025718-Pattern_Excluded.jpg",title: "666-11243-0090-female-025718-Pattern_Excluded.jpg"},
+                ],
             }
         };
+
+        const audios = [
+            "wavs/011805.wav", "wavs/005464.wav", "wavs/008089.wav", "wavs/017827.wav", "wavs/018102.wav",
+            "wavs/031362.wav", "wavs/007460.wav", "wavs/000681.wav", "wavs/006827.wav",  "wavs/025718.wav"
+        ];
 
         // 初始化相册
         function initGallery(albumId) {
@@ -183,27 +239,62 @@
             // 更新标题和描述
             document.getElementById('album-title').textContent = album.title;
             document.getElementById('album-description').textContent = album.description;
-
+            
+            document.getElementById('album-description').textContent = album.description;
             // 清空现有内容
             gallery.innerHTML = '';
+            // 
 
-            // 生成图片元素
-            album.images.forEach(image => {
+            // 确保两个数组长度一致
+            const maxLength = Math.max(album.images1.length, album.images2.length);
+            
+            // 生成并排的图片元素
+            for (let i = 0; i < maxLength; i++) {
+                const image1 = album.images1[i];
+                const image2 = album.images2[i];
+
+                // 创建外层容器
                 const photoItem = document.createElement('div');
                 photoItem.className = 'photo-item';
-                
-                const img = document.createElement('img');
-                img.src = `/static/${albumId}/${image.filename}`;
-                img.alt = image.title;
-                
+
+                // 创建并排图片容器
+                const row = document.createElement('div');
+                row.className = 'image-row'; // 用于布局的 CSS 类
+
+                // 添加 images1 的图片
+                if (image1) {
+                    const img1 = document.createElement('img');
+                    img1.src = `static/${albumId}/${image1.filename}`;
+                    img1.alt = image1.title;
+                    row.appendChild(img1);
+                }
+
+                // 添加 images2 的图片
+                if (image2) {
+                    const img2 = document.createElement('img');
+                    img2.src = `static/${albumId}/${image2.filename}`;
+                    img2.alt = image2.title;
+                    row.appendChild(img2);
+                }
+
+                // 创建共享标题（优先显示 images1 的标题）
                 const title = document.createElement('div');
                 title.className = 'photo-title';
-                title.textContent = image.title;
+                title.textContent = (image1 || image2).title; // 安全取值
+                
+                // 创建音频播放器
+                const audio = document.createElement('audio');
+                audio.controls = true; // 显示音频控件
+                audio.src = `static/${audios[i]}`;
+                audio.style.width = '50%'; // 设置音频播放器宽度
+                audio.style.marginTop = '10px'; // 设置音频播放器与标题的间距
 
-                photoItem.appendChild(img);
+                // 组合元素
                 photoItem.appendChild(title);
+                photoItem.appendChild(row);
+                photoItem.appendChild(audio);
                 gallery.appendChild(photoItem);
-            });
+            }
         }
 
         // 导航切换功能
@@ -224,7 +315,7 @@
         });
 
         // 默认加载第一个相册
-        initGallery('nature');
+        initGallery('Trial_20250207_5spk');
     </script>
 </body>
 </html>

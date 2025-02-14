@@ -126,6 +126,10 @@
             width: 50%;
             height: auto;
         }
+        .image-timecourse img {
+            width: 20%;
+            height: auto;
+        }
 
         /* 标题样式 */
         .photo-title {
@@ -153,8 +157,15 @@
             <div class="description">
                 <h2 id="album-title"></h2>
                 <p id="album-description"></p>
-            </div>
+                 
+                <p id="training-detail">
+                    Training detail: <a href="https://wandb.ai/your-project" target="_blank">View on WandB</a>
+                </p>
 
+            </div>
+            <hr>
+            <div class="word_activation" id="word_activation"></div>
+            <hr>
             <div class="gallery" id="gallery"></div>
         </main>
     </div>
@@ -167,7 +178,7 @@
                 wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/7850ydjv",
                 timecourse: "time_course.png",
                 timecourse1stword: "time_course.1stword.png",
-                description: "这里展示大自然的壮丽景色，包含山脉、森林和湖泊等自然景观。",
+                description: "Basic model. Train with 5 speakers. The number of Training sentence is 103720.",
                 images1: [
                     {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
                     {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
@@ -194,11 +205,11 @@
                 ],
             },
             Trial_20250207_5spk_FreqCorrection: {
-                title: "城市景观",
+                title: "Trial_20250207_5spk_FreqCorrection",
                 wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/t1fep25f",
                 timecourse: "time_course.png",
                 timecourse1stword: "time_course.1stword.png",
-                description: "现代都市的天际线与历史建筑的完美融合。",
+                description: "Add frequency correction on loss, see https://github.com/comp-cogneuro-lang/Earshot-CS/commit/fb6ff4d84cdea102d0d105f569e19d554bea7e3a.",
                 images1: [
                     {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
                     {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
@@ -240,7 +251,40 @@
             document.getElementById('album-title').textContent = album.title;
             document.getElementById('album-description').textContent = album.description;
             
-            document.getElementById('album-description').textContent = album.description;
+            document.getElementById('training-detail').textContent = `Training detail: ${album.wandb}`;
+
+            // 添加 WandB 超链接
+            const trainingDetailElement = document.getElementById('training-detail');
+            const link = document.createElement('a');
+            link.href = album.wandb; // 设置链接的 URL
+            link.textContent = 'View on WandB'; // 设置链接的显示文本
+            link.target = '_blank'; // 让链接在新标签页打开
+
+            // 清空现有内容并插入超链接
+            trainingDetailElement.innerHTML = 'Training detail: ';
+            trainingDetailElement.appendChild(link);
+
+
+            //
+            word_activation.innerHTML = '';
+            const photoItem = document.createElement('div');
+            photoItem.className = 'photo-item';
+            const row = document.createElement('div');
+            row.className = 'image-timecourse'; // 用于布局的 CSS 类
+            
+            const imgl = document.createElement('img');
+            imgl.src = `static/${albumId}/${album.timecourse}`;
+            row.appendChild(imgl);
+            const imgr = document.createElement('img');
+            imgr.src = `static/${albumId}/${album.timecourse1stword}`;
+            row.appendChild(imgr);
+            const title = document.createElement('div');
+            title.className = 'photo-title';
+            title.textContent = "(Left) The timecourse of competition, (Right) The timecourse of competition, only calculate the 1st word in sentences."
+            photoItem.appendChild(title);
+            photoItem.appendChild(row);
+            word_activation.appendChild(photoItem);
+
             // 清空现有内容
             gallery.innerHTML = '';
             // 

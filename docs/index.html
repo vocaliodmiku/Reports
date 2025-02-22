@@ -5,42 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earshot CS Preliminary Results</title>
     <style>
-        :root {
-            --nav-width: 200px;
-            --gap: 20px;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-        }
-
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* 导航样式 */
-        nav {
-            width: var(--nav-width);
-            background: #f5f5f5;
-            padding: 20px;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-        }
-
-        .nav-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .nav-item {
-            margin: 10px 0;
-        }
-
+    <style>
         .nav-link {
             display: block;
             padding: 10px;
@@ -52,7 +17,7 @@
 
         .nav-link:hover,
         .nav-link.active {
-            background: -007bff;
+            background: #007bff;
             color: rgb(19, 187, 128);
         }
 
@@ -60,6 +25,7 @@
         main {
             flex: 1;
             padding: 20px;
+            margin-left: calc(var(--nav-width) + 20px); /* 增加左边距 */
         }
 
         /* 描述文字样式 */
@@ -70,25 +36,22 @@
             border-radius: 4px;
         }
 
-        /* 相册网格布局 */
-        .gallery {
-            /* display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--gap); */
-        }
-
-        /* 图片项样式 */
-        .photo-item {
-            position: relative;
-            break-inside: avoid;
-            margin-bottom: var(--gap);
-        }
-
-        .photo-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        /* 响应式设计 */
+        @media (max-width: 1536px) {
+            nav {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            
+            main {
+                margin-left: 0; /* 移动端移除左边距 */
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
         }
 
         .photo-title {
@@ -97,51 +60,73 @@
             color: #666;
         }
 
-        /* 响应式设计 */
+        .sample_container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 两列布局 */
+            gap: 10px; /* 每个 iframe 之间的间距 */
+            padding: 10px;
+            width: 100vw;
+        }
+        .iframe-container {
+            width: 100%; /* 让 iframe 适应父容器 */
+            height: 600px; /* 统一高度 */
+            border: 2px solid #ccc;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Add a class for collapsed navigation */
+        nav.collapsed {
+            display: none;
+        }
+
+        /* Add a toggle button for smaller screens */
+        .toggle-nav {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Show the toggle button and hide the nav on smaller screens */
         @media (max-width: 1536px) {
-            .container {
-                flex-direction: column;
+            .toggle-nav {
+                display: block;
             }
-
+            
             nav {
-                width: 100%;
-                height: auto;
-                position: static;
+                display: none;
             }
-
-            .gallery {
-                grid-template-columns: 1fr;
+            
+            nav.collapsed {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--nav-width);
+                height: 100%;
+                background: white;
+                z-index: 1000;
+            }
+            
+            main {
+                margin-left: 0;
             }
         }
-
-        /* 使图片并排显示 */
-        .image-row {
-            display: flex;
-            gap: 20px; /* 控制图片间距 */
-            margin-bottom: 10px; /* 标题与图片的间距 */
-        }
-
-        /* 控制图片宽度（可选） */
-        .image-row img {
-            width: 50%;
-            height: auto;
-        }
-        .image-timecourse img {
-            width: 20%;
-            height: auto;
-        }
-
-        /* 标题样式 */
-        .photo-title {
-            text-align: center;
-            font-size: 0.9em;
-            color: #666;
-        }
-        
     </style>
 </head>
 <body>
     <div class="container">
+        <button class="toggle-nav" onclick="toggleNav()">☰</button>
         <nav>
             <ul class="nav-list">
                 <li class="nav-item">
@@ -161,47 +146,58 @@
                 <p id="training-detail">
                     Training detail: <a href="https://wandb.ai/your-project" target="_blank">View on WandB</a>
                 </p>
-
+                <p>Using Ctrl + +/- to adjust view.</p>
             </div>
             <hr>
-            <div class="word_activation" id="word_activation"></div>
+            <h2>Overall Timecourse of Competition.</h2>
+            <div id="word_activation"></div>
             <hr>
-            <div class="gallery" id="gallery"></div>
+            <h2>Case Studies.</h2>
+            <div style="font-size: smaller;"> 
+                <br>Note: </br>
+                <ul> <li>For the following images, click the legend to toggle corresponding curves on/off.</li> <li>The left and right panels belong to the same speech.</li> <li>The left panel shows activation strength (cosine similarity) of words in the sentence.</li> <li>Red lines in the left panel indicate word onsets, black lines mark word offsets. The offset of the current word may overlap with the onset of the next word.</li> <li>The left panel displays activation strength for different phonological patterns.</li> <li>"Cohort S.D" in the left panel represents the standard deviation of the cohort.</li> <li>"Cohort AUC MAX" in the right panel refers to the cohort word with maximum AUC that accumulates the highest activation strength during word duration. Calculating momentary maxima of cohorts at each time point holds limited significance as they may belong to different words.</li> <li>"Cohort AUC MAX" shows time-varying activation strength of the most competitive cohort.</li> </ul> </div>
+            <div id="gallery"></div>
+
+            <hr>
+ 
         </main>
     </div>
 
-    <script>
+    <script> 
+        function toggleNav() {
+                    const nav = document.querySelector('nav');
+                    nav.classList.toggle('collapsed');
+                }
         // 相册数据配置
         const albums = {
             Trial_20250207_5spk: {
                 title: "Trial_20250207_5spk",
                 wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/7850ydjv",
-                timecourse: "time_course.png",
-                timecourse1stword: "time_course.1stword.png",
+                timecourse: "time_course.html",
                 description: "Basic model. Train with 5 speakers. The number of Training sentence is 103720.",
                 images1: [
-                    {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-008089-Pattern_Excluded.jpg",title: "666-11243-0090-female-008089-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-017827-Pattern_Excluded.jpg",title: "666-11243-0090-female-017827-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-018102-Pattern_Excluded.jpg",title: "666-11243-0090-female-018102-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-031362-Pattern_Excluded.jpg",title: "666-11243-0090-female-031362-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-007460-Pattern_Excluded.jpg",title: "666-11243-0090-female-007460-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-000681-Pattern_Excluded.jpg",title: "666-11243-0090-female-000681-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-006827-Pattern_Excluded.jpg",title: "666-11243-0090-female-006827-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-025718-Pattern_Excluded.jpg",title: "666-11243-0090-female-025718-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-000681-Pattern_Excluded.html",title: "666-11243-0090-female-000681-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.html",title: "666-11243-0090-female-005464-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-006827-Pattern_Excluded.html",title: "666-11243-0090-female-006827-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-007460-Pattern_Excluded.html",title: "666-11243-0090-female-007460-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-008089-Pattern_Excluded.html",title: "666-11243-0090-female-008089-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.html",title: "666-11243-0090-female-011805-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-017827-Pattern_Excluded.html",title: "666-11243-0090-female-017827-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-018102-Pattern_Excluded.html",title: "666-11243-0090-female-018102-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-025718-Pattern_Excluded.html",title: "666-11243-0090-female-025718-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-031362-Pattern_Excluded.html",title: "666-11243-0090-female-031362-Pattern_Excluded"}
                 ],
                 images2: [
-                    {filename: "figs2/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-008089-Pattern_Excluded.jpg",title: "666-11243-0090-female-008089-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-017827-Pattern_Excluded.jpg",title: "666-11243-0090-female-017827-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-018102-Pattern_Excluded.jpg",title: "666-11243-0090-female-018102-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-031362-Pattern_Excluded.jpg",title: "666-11243-0090-female-031362-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-007460-Pattern_Excluded.jpg",title: "666-11243-0090-female-007460-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-000681-Pattern_Excluded.jpg",title: "666-11243-0090-female-000681-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-006827-Pattern_Excluded.jpg",title: "666-11243-0090-female-006827-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-025718-Pattern_Excluded.jpg",title: "666-11243-0090-female-025718-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-000681-Pattern_Excluded.html",title: "666-11243-0090-female-000681-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-005464-Pattern_Excluded.html",title: "666-11243-0090-female-005464-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-006827-Pattern_Excluded.html",title: "666-11243-0090-female-006827-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-007460-Pattern_Excluded.html",title: "666-11243-0090-female-007460-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-008089-Pattern_Excluded.html",title: "666-11243-0090-female-008089-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-011805-Pattern_Excluded.html",title: "666-11243-0090-female-011805-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-017827-Pattern_Excluded.html",title: "666-11243-0090-female-017827-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-018102-Pattern_Excluded.html",title: "666-11243-0090-female-018102-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-025718-Pattern_Excluded.html",title: "666-11243-0090-female-025718-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-031362-Pattern_Excluded.html",title: "666-11243-0090-female-031362-Pattern_Excluded"}
                 ],
             },
             Trial_20250207_5spk_FreqCorrection: {
@@ -238,8 +234,8 @@
         };
 
         const audios = [
-            "wavs/011805.wav", "wavs/005464.wav", "wavs/008089.wav", "wavs/017827.wav", "wavs/018102.wav",
-            "wavs/031362.wav", "wavs/007460.wav", "wavs/000681.wav", "wavs/006827.wav",  "wavs/025718.wav"
+            "wavs/000681.wav", "wavs/005464.wav", "wavs/006827.wav", "wavs/007460.wav", "wavs/008089.wav", 
+            "wavs/011805.wav", "wavs/017827.wav", "wavs/018102.wav", "wavs/025718.wav", "wavs/031362.wav"
         ];
 
         // 初始化相册
@@ -264,81 +260,119 @@
             trainingDetailElement.innerHTML = 'Training detail: ';
             trainingDetailElement.appendChild(link);
 
-
-            //
+            // ==================== Word Activation ====================
             word_activation.innerHTML = '';
-            const photoItem = document.createElement('div');
-            photoItem.className = 'photo-item';
-            const row = document.createElement('div');
-            row.className = 'image-timecourse'; // 用于布局的 CSS 类
             
-            const imgl = document.createElement('img');
-            imgl.src = `static/${albumId}/${album.timecourse}`;
-            row.appendChild(imgl);
-            const imgr = document.createElement('img');
-            imgr.src = `static/${albumId}/${album.timecourse1stword}`;
-            row.appendChild(imgr);
-            const title = document.createElement('div');
-            title.className = 'photo-title';
-            title.textContent = "(Left) The timecourse of competition, (Right) The timecourse of competition, only calculate the 1st word in sentences."
-            photoItem.appendChild(title);
-            photoItem.appendChild(row);
-            word_activation.appendChild(photoItem);
+            const iframeContainer = document.createElement('div');
+            const iframe = document.createElement('iframe');
+            iframeContainer.className = 'iframe-container';
+            iframe.src = `static/${albumId}/${ album.timecourse}`; 
+            iframeContainer.appendChild(iframe);
+            word_activation.appendChild(iframeContainer);
 
-            // 清空现有内容
+            // ==================== Gallery ====================
             gallery.innerHTML = '';
-            // 
-
-            // 确保两个数组长度一致
             const maxLength = Math.max(album.images1.length, album.images2.length);
-            
-            // 生成并排的图片元素
+
             for (let i = 0; i < maxLength; i++) {
-                const image1 = album.images1[i];
-                const image2 = album.images2[i];
+                const imageL = album.images1[i];
+                const imageR = album.images2[i];
 
-                // 创建外层容器
-                const photoItem = document.createElement('div');
-                photoItem.className = 'photo-item';
-
-                // 创建并排图片容器
-                const row = document.createElement('div');
-                row.className = 'image-row'; // 用于布局的 CSS 类
-
-                // 添加 images1 的图片
-                if (image1) {
-                    const img1 = document.createElement('img');
-                    img1.src = `static/${albumId}/${image1.filename}`;
-                    img1.alt = image1.title;
-                    row.appendChild(img1);
-                }
-
-                // 添加 images2 的图片
-                if (image2) {
-                    const img2 = document.createElement('img');
-                    img2.src = `static/${albumId}/${image2.filename}`;
-                    img2.alt = image2.title;
-                    row.appendChild(img2);
-                }
-
-                // 创建共享标题（优先显示 images1 的标题）
                 const title = document.createElement('div');
                 title.className = 'photo-title';
-                title.textContent = (image1 || image2).title; // 安全取值
-                
+                title.textContent = (imageL || imageR).title; // 安全取值 
+ 
+                // 
+                const iframeContainer = document.createElement('div');
+                iframeContainer.className = 'sample_container';
+
+                // 创建左侧 iframe 容器
+                const iframeContainer1 = document.createElement('div');
+                iframeContainer1.className = 'iframe-container';
+                const iframe1 = document.createElement('iframe');
+                iframe1.src = `static/${albumId}/${imageL.filename}`; 
+                iframeContainer1.appendChild(iframe1);
+
+                // 创建右侧 iframe 容器
+                const iframeContainer2 = document.createElement('div');
+                iframeContainer2.className = 'iframe-container';
+                const iframe2 = document.createElement('iframe');
+                iframe2.src =  `static/${albumId}/${imageR.filename}`; 
+                iframeContainer2.appendChild(iframe2);
+
+                // 添加到主容器
+                iframeContainer.appendChild(iframeContainer1);
+                iframeContainer.appendChild(iframeContainer2); 
+    
                 // 创建音频播放器
                 const audio = document.createElement('audio');
                 audio.controls = true; // 显示音频控件
                 audio.src = `static/${audios[i]}`;
                 audio.style.width = '50%'; // 设置音频播放器宽度
                 audio.style.marginTop = '10px'; // 设置音频播放器与标题的间距
-
+                
                 // 组合元素
-                photoItem.appendChild(title);
-                photoItem.appendChild(row);
-                photoItem.appendChild(audio);
-                gallery.appendChild(photoItem);
+                gallery.appendChild(title);
+                gallery.appendChild(iframeContainer);
+                gallery.appendChild(audio);
+
+
             }
+
+            // 清空现有内容
+            // gallery.innerHTML = '';
+            // 
+
+            // 确保两个数组长度一致
+            // const maxLength = Math.max(album.images1.length, album.images2.length);
+            
+            // 生成并排的图片元素
+            // for (let i = 0; i < maxLength; i++) {
+            //     const image1 = album.images1[i];
+            //     const image2 = album.images2[i];
+
+            //     // 创建外层容器
+            //     const photoItem = document.createElement('div');
+            //     photoItem.className = 'photo-item';
+
+            //     // 创建并排图片容器
+            //     const row = document.createElement('div');
+            //     row.className = 'image-row'; // 用于布局的 CSS 类
+
+            //     // 添加 images1 的图片
+            //     if (image1) {
+            //         const img1 = document.createElement('img');
+            //         img1.src = `static/${albumId}/${image1.filename}`;
+            //         img1.alt = image1.title;
+            //         row.appendChild(img1);
+            //     }
+
+            //     // 添加 images2 的图片
+            //     if (image2) {
+            //         const img2 = document.createElement('img');
+            //         img2.src = `static/${albumId}/${image2.filename}`;
+            //         img2.alt = image2.title;
+            //         row.appendChild(img2);
+            //     }
+
+            //     // 创建共享标题（优先显示 images1 的标题）
+            //     const title = document.createElement('div');
+            //     title.className = 'photo-title';
+            //     title.textContent = (image1 || image2).title; // 安全取值
+                
+            //     // 创建音频播放器
+            //     const audio = document.createElement('audio');
+            //     audio.controls = true; // 显示音频控件
+            //     audio.src = `static/${audios[i]}`;
+            //     audio.style.width = '50%'; // 设置音频播放器宽度
+            //     audio.style.marginTop = '10px'; // 设置音频播放器与标题的间距
+
+            //     // 组合元素
+            //     photoItem.appendChild(title);
+            //     photoItem.appendChild(row);
+            //     photoItem.appendChild(audio);
+            //     gallery.appendChild(photoItem);
+            // }
         }
 
         // 导航切换功能
@@ -357,9 +391,10 @@
                 initGallery(albumId);
             });
         });
+    
 
         // 默认加载第一个相册
-        initGallery('Trial_20250207_5spk');
+        initGallery('Trial_20250207_5spk'); 
     </script>
 </body>
 </html>

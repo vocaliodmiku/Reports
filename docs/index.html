@@ -86,9 +86,12 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link active" data-album="Trial_20250207_5spk">Trial_20250207_5spk</a>
                 </li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a href="#" class="nav-link" data-album="Trial_20250207_5spk_FreqCorrection">Trial_20250207_5spk_FreqCorrection</a>
-                </li> -->
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-album="Trial_20250313_5spk_Zero_Error_Radius_1e3">Trial_20250313_5spk_Zero_Error_Radius_1e-3</a>
+                </li>
             </ul>
         </nav>
 
@@ -103,7 +106,7 @@
                 <p>Using Ctrl + +/- to adjust view.</p>
             </div>
             <hr>
-            <h2>Overall Timecourse of Competition.</h2>
+            <h2>Overall Timecourse of Competition. (Right: only the very fisrt word of each sentence.)</h2>
             <div id="word_activation"></div>
             <hr>
             <h2>Case Studies.</h2>
@@ -126,8 +129,9 @@
         const albums = {
             Trial_20250207_5spk: {
                 title: "Trial_20250207_5spk",
-                wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/7850ydjv",
+                wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/dcefpk7v",
                 timecourse: "time_course.html",
+                timecourse1: "time_course_1st.html",
                 description: "Basic model. Train with 5 speakers. The number of Training sentence is 103720.",
                 images1: [
                     {filename: "figs/666-11243-0090-female-000681-Pattern_Excluded.html",title: "666-11243-0090-female-000681-Pattern_Excluded"},
@@ -156,33 +160,64 @@
             },
             Trial_20250207_5spk_FreqCorrection: {
                 title: "Trial_20250207_5spk_FreqCorrection",
-                wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/t1fep25f",
-                timecourse: "time_course.png",
-                timecourse1stword: "time_course.1stword.png",
+                wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/d9jmnlub",
+                timecourse: "time_course.html",
+                timecourse1: "time_course_1st.html",
                 description: "Add frequency correction on loss, see https://github.com/comp-cogneuro-lang/Earshot-CS/commit/fb6ff4d84cdea102d0d105f569e19d554bea7e3a.",
                 images1: [
-                    {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-008089-Pattern_Excluded.jpg",title: "666-11243-0090-female-008089-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-017827-Pattern_Excluded.jpg",title: "666-11243-0090-female-017827-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-018102-Pattern_Excluded.jpg",title: "666-11243-0090-female-018102-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-031362-Pattern_Excluded.jpg",title: "666-11243-0090-female-031362-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-007460-Pattern_Excluded.jpg",title: "666-11243-0090-female-007460-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-000681-Pattern_Excluded.jpg",title: "666-11243-0090-female-000681-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-006827-Pattern_Excluded.jpg",title: "666-11243-0090-female-006827-Pattern_Excluded.jpg"},
-                    {filename: "figs/666-11243-0090-female-025718-Pattern_Excluded.jpg",title: "666-11243-0090-female-025718-Pattern_Excluded.jpg"},
+                    {filename: "figs/666-11243-0090-female-000681-Pattern_Excluded.html",title: "666-11243-0090-female-000681-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.html",title: "666-11243-0090-female-005464-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-006827-Pattern_Excluded.html",title: "666-11243-0090-female-006827-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-007460-Pattern_Excluded.html",title: "666-11243-0090-female-007460-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-008089-Pattern_Excluded.html",title: "666-11243-0090-female-008089-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.html",title: "666-11243-0090-female-011805-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-017827-Pattern_Excluded.html",title: "666-11243-0090-female-017827-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-018102-Pattern_Excluded.html",title: "666-11243-0090-female-018102-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-025718-Pattern_Excluded.html",title: "666-11243-0090-female-025718-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-031362-Pattern_Excluded.html",title: "666-11243-0090-female-031362-Pattern_Excluded"}
                 ],
                 images2: [
-                    {filename: "figs2/666-11243-0090-female-011805-Pattern_Excluded.jpg",title: "666-11243-0090-female-011805-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-005464-Pattern_Excluded.jpg",title: "666-11243-0090-female-005464-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-008089-Pattern_Excluded.jpg",title: "666-11243-0090-female-008089-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-017827-Pattern_Excluded.jpg",title: "666-11243-0090-female-017827-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-018102-Pattern_Excluded.jpg",title: "666-11243-0090-female-018102-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-031362-Pattern_Excluded.jpg",title: "666-11243-0090-female-031362-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-007460-Pattern_Excluded.jpg",title: "666-11243-0090-female-007460-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-000681-Pattern_Excluded.jpg",title: "666-11243-0090-female-000681-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-006827-Pattern_Excluded.jpg",title: "666-11243-0090-female-006827-Pattern_Excluded.jpg"},
-                    {filename: "figs2/666-11243-0090-female-025718-Pattern_Excluded.jpg",title: "666-11243-0090-female-025718-Pattern_Excluded.jpg"},
+                    {filename: "figs2/666-11243-0090-female-000681-Pattern_Excluded.html",title: "666-11243-0090-female-000681-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-005464-Pattern_Excluded.html",title: "666-11243-0090-female-005464-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-006827-Pattern_Excluded.html",title: "666-11243-0090-female-006827-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-007460-Pattern_Excluded.html",title: "666-11243-0090-female-007460-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-008089-Pattern_Excluded.html",title: "666-11243-0090-female-008089-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-011805-Pattern_Excluded.html",title: "666-11243-0090-female-011805-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-017827-Pattern_Excluded.html",title: "666-11243-0090-female-017827-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-018102-Pattern_Excluded.html",title: "666-11243-0090-female-018102-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-025718-Pattern_Excluded.html",title: "666-11243-0090-female-025718-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-031362-Pattern_Excluded.html",title: "666-11243-0090-female-031362-Pattern_Excluded"}
+                ],
+            },
+            Trial_20250313_5spk_Zero_Error_Radius_1e3: {
+                title: " Trial_20250313_5spk_Zero_Error_Radius_1e-3",
+                wandb: "https://wandb.ai/liyue/Earshot-CS-src_earshot/runs/902npqja",
+                timecourse: "time_course.html",
+                timecourse1: "time_course_1st.html",
+                description: "Add Zero Error Radius on loss.",
+                images1: [
+                    {filename: "figs/666-11243-0090-female-000681-Pattern_Excluded.html",title: "666-11243-0090-female-000681-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-005464-Pattern_Excluded.html",title: "666-11243-0090-female-005464-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-006827-Pattern_Excluded.html",title: "666-11243-0090-female-006827-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-007460-Pattern_Excluded.html",title: "666-11243-0090-female-007460-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-008089-Pattern_Excluded.html",title: "666-11243-0090-female-008089-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-011805-Pattern_Excluded.html",title: "666-11243-0090-female-011805-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-017827-Pattern_Excluded.html",title: "666-11243-0090-female-017827-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-018102-Pattern_Excluded.html",title: "666-11243-0090-female-018102-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-025718-Pattern_Excluded.html",title: "666-11243-0090-female-025718-Pattern_Excluded"},
+                    {filename: "figs/666-11243-0090-female-031362-Pattern_Excluded.html",title: "666-11243-0090-female-031362-Pattern_Excluded"}
+                ],
+                images2: [
+                    {filename: "figs2/666-11243-0090-female-000681-Pattern_Excluded.html",title: "666-11243-0090-female-000681-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-005464-Pattern_Excluded.html",title: "666-11243-0090-female-005464-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-006827-Pattern_Excluded.html",title: "666-11243-0090-female-006827-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-007460-Pattern_Excluded.html",title: "666-11243-0090-female-007460-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-008089-Pattern_Excluded.html",title: "666-11243-0090-female-008089-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-011805-Pattern_Excluded.html",title: "666-11243-0090-female-011805-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-017827-Pattern_Excluded.html",title: "666-11243-0090-female-017827-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-018102-Pattern_Excluded.html",title: "666-11243-0090-female-018102-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-025718-Pattern_Excluded.html",title: "666-11243-0090-female-025718-Pattern_Excluded"},
+                    {filename: "figs2/666-11243-0090-female-031362-Pattern_Excluded.html",title: "666-11243-0090-female-031362-Pattern_Excluded"}
                 ],
             }
         };
@@ -217,11 +252,27 @@
             // ==================== Word Activation ====================
             word_activation.innerHTML = '';
             
+            // 
             const iframeContainer = document.createElement('div');
-            const iframe = document.createElement('iframe');
-            iframeContainer.className = 'iframe-container';
-            iframe.src = `static/${albumId}/${ album.timecourse}`; 
-            iframeContainer.appendChild(iframe);
+            iframeContainer.className = 'sample_container';
+
+            // 创建左侧 iframe 容器
+            const iframeContainer1 = document.createElement('div');
+            iframeContainer1.className = 'iframe-container';
+            const iframe1 = document.createElement('iframe');
+            iframe1.src = `static/${albumId}/${album.timecourse}`; 
+            iframeContainer1.appendChild(iframe1);
+
+            // 创建右侧 iframe 容器
+            const iframeContainer2 = document.createElement('div');
+            iframeContainer2.className = 'iframe-container';
+            const iframe2 = document.createElement('iframe');
+            iframe2.src =  `static/${albumId}/${album.timecourse1}`; 
+            iframeContainer2.appendChild(iframe2);
+
+            // 添加到主容器
+            iframeContainer.appendChild(iframeContainer1);
+            iframeContainer.appendChild(iframeContainer2); 
             word_activation.appendChild(iframeContainer);
 
             // ==================== Gallery ====================
@@ -272,61 +323,6 @@
 
 
             }
-
-            // 清空现有内容
-            // gallery.innerHTML = '';
-            // 
-
-            // 确保两个数组长度一致
-            // const maxLength = Math.max(album.images1.length, album.images2.length);
-            
-            // 生成并排的图片元素
-            // for (let i = 0; i < maxLength; i++) {
-            //     const image1 = album.images1[i];
-            //     const image2 = album.images2[i];
-
-            //     // 创建外层容器
-            //     const photoItem = document.createElement('div');
-            //     photoItem.className = 'photo-item';
-
-            //     // 创建并排图片容器
-            //     const row = document.createElement('div');
-            //     row.className = 'image-row'; // 用于布局的 CSS 类
-
-            //     // 添加 images1 的图片
-            //     if (image1) {
-            //         const img1 = document.createElement('img');
-            //         img1.src = `static/${albumId}/${image1.filename}`;
-            //         img1.alt = image1.title;
-            //         row.appendChild(img1);
-            //     }
-
-            //     // 添加 images2 的图片
-            //     if (image2) {
-            //         const img2 = document.createElement('img');
-            //         img2.src = `static/${albumId}/${image2.filename}`;
-            //         img2.alt = image2.title;
-            //         row.appendChild(img2);
-            //     }
-
-            //     // 创建共享标题（优先显示 images1 的标题）
-            //     const title = document.createElement('div');
-            //     title.className = 'photo-title';
-            //     title.textContent = (image1 || image2).title; // 安全取值
-                
-            //     // 创建音频播放器
-            //     const audio = document.createElement('audio');
-            //     audio.controls = true; // 显示音频控件
-            //     audio.src = `static/${audios[i]}`;
-            //     audio.style.width = '50%'; // 设置音频播放器宽度
-            //     audio.style.marginTop = '10px'; // 设置音频播放器与标题的间距
-
-            //     // 组合元素
-            //     photoItem.appendChild(title);
-            //     photoItem.appendChild(row);
-            //     photoItem.appendChild(audio);
-            //     gallery.appendChild(photoItem);
-            // }
         }
 
         // 导航切换功能
